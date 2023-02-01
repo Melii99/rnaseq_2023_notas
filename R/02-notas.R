@@ -56,3 +56,12 @@ rowData(rse) # es idéntico a 'mcols(rowRanges(rse))'
 
 ## Tabla con información de las muestras
 colData(rse)
+
+### Ejercicio ###
+
+## Comando 1
+rse[1:2, ] # Se imprime el primer y segundo renglón del objeto y todas las columnas
+
+## Comando 2
+rse[, c("A", "D", "F")] # Se imprimen todos los renglones del objeto y las columnas A,D y F
+
