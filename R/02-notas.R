@@ -149,5 +149,5 @@ colData(rse_gene_SRP009615)[
   grepl("^sra_attribute", colnames(colData(rse_gene_SRP009615)))
 ]
 
-
-
+### Ejercicio iSEE imágen ###
+iSEE::iSEE(rse_gene_SRP009615)
