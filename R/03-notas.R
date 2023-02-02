@@ -53,3 +53,18 @@ vd <- VisualizeDesign(
 
 cowplot::plot_grid(plotlist = vd$plotlist, ncol = 1)
 
+### Ejemplo 3 ###
+
+(sampleData = data.frame(
+  condition = factor(rep(c("ctrl_minus", "ctrl_plus",
+                           "ko_minus", "ko_plus"), 3)),
+  batch = factor(rep(1:6, each = 2))))
+
+# 0 + se usa para no tener intercepto (no quieres algo específico como referencia)
+vd <- VisualizeDesign(sampleData = sampleData,
+                      designFormula = ~ 0 + batch + condition,
+                      textSizeFitted = 4, lineWidthFitted = 20,
+                      dropCols = "conditionko_minus")
+
+cowplot::plot_grid(plotlist = vd$plotlist, ncol = 1)
+
