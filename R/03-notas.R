@@ -104,3 +104,24 @@ colData(rse_gene_SRP045638)[
   grepl("^sra_attribute", colnames(colData(rse_gene_SRP045638)))
 ]
 
+
+## Pasar de character a nuemric o factor
+rse_gene_SRP045638$sra_attribute.age <- as.numeric(rse_gene_SRP045638$sra_attribute.age)
+rse_gene_SRP045638$sra_attribute.disease <- factor(rse_gene_SRP045638$sra_attribute.disease)
+rse_gene_SRP045638$sra_attribute.RIN <- as.numeric(rse_gene_SRP045638$sra_attribute.RIN)
+rse_gene_SRP045638$sra_attribute.sex <- factor(rse_gene_SRP045638$sra_attribute.sex)
+
+## Resumen de las variables de interés
+summary(as.data.frame(colData(rse_gene_SRP045638)[
+  ,
+  grepl("^sra_attribute.[age|disease|RIN|sex]", colnames(colData(rse_gene_SRP045638)))
+]))
+
+### Encontraremos diferencias entre muestra prenatalas vs postnatales ###
+
+rse_gene_SRP045638$prenatal <- factor(ifelse(rse_gene_SRP045638$sra_attribute.age < 0, "prenatal", "postnatal"))
+table(rse_gene_SRP045638$prenatal)
+
+## http://rna.recount.bio/docs/quality-check-fields.html
+rse_gene_SRP045638$assigned_gene_prop <- rse_gene_SRP045638$recount_qc.gene_fc_count_all.assigned / rse_gene_SRP045638$recount_qc.gene_fc_count_all.total
+summary(rse_gene_SRP045638$assigned_gene_prop)
