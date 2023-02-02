@@ -137,3 +137,26 @@ rse_gene_SRP045638_unfiltered <- rse_gene_SRP045638
 
 ## Eliminemos a muestras malas
 hist(rse_gene_SRP045638$assigned_gene_prop)
+
+table(rse_gene_SRP045638$assigned_gene_prop < 0.3)
+
+# Nos quedamos con los datos buenos
+rse_gene_SRP045638 <- rse_gene_SRP045638[, rse_gene_SRP045638$assigned_gene_prop > 0.3]
+
+
+## Calculemos los niveles medios de expresión de los genes en nuestras
+## muestras.
+## Ojo: en un análisis real probablemente haríamos esto con los RPKMs o CPMs
+## en vez de las cuentas.
+gene_means <- rowMeans(assay(rse_gene_SRP045638, "counts"))
+summary(gene_means)
+
+## Eliminamos genes
+rse_gene_SRP045638 <- rse_gene_SRP045638[gene_means > 0.1, ]
+
+## Dimensiones finales
+dim(rse_gene_SRP045638)
+
+## Porcentaje de genes que retuvimos
+round(nrow(rse_gene_SRP045638) / nrow(rse_gene_SRP045638_unfiltered) * 100, 2)
+
