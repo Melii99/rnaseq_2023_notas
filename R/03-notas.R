@@ -125,3 +125,15 @@ table(rse_gene_SRP045638$prenatal)
 ## http://rna.recount.bio/docs/quality-check-fields.html
 rse_gene_SRP045638$assigned_gene_prop <- rse_gene_SRP045638$recount_qc.gene_fc_count_all.assigned / rse_gene_SRP045638$recount_qc.gene_fc_count_all.total
 summary(rse_gene_SRP045638$assigned_gene_prop)
+
+### Graficamos ###
+with(colData(rse_gene_SRP045638), plot(assigned_gene_prop, sra_attribute.RIN))
+
+# Diferencias entre los grupos
+with(colData(rse_gene_SRP045638), tapply(assigned_gene_prop, prenatal, summary))
+
+## Guardemos nuestro objeto entero por si luego cambiamos de opinión
+rse_gene_SRP045638_unfiltered <- rse_gene_SRP045638
+
+## Eliminemos a muestras malas
+hist(rse_gene_SRP045638$assigned_gene_prop)
