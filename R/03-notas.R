@@ -160,3 +160,12 @@ dim(rse_gene_SRP045638)
 ## Porcentaje de genes que retuvimos
 round(nrow(rse_gene_SRP045638) / nrow(rse_gene_SRP045638_unfiltered) * 100, 2)
 
+### Normalización  ###
+
+library("edgeR") # BiocManager::install("edgeR", update = FALSE)
+dge <- DGEList(
+  counts = assay(rse_gene_SRP045638, "counts"),
+  genes = rowData(rse_gene_SRP045638)
+)
+dge <- calcNormFactors(dge)
+
