@@ -169,3 +169,14 @@ dge <- DGEList(
 )
 dge <- calcNormFactors(dge)
 
+
+### Exploramos la relación entre nuestras variables: Expresión diferencial ###
+
+library("ggplot2")
+
+ggplot(as.data.frame(colData(rse_gene_SRP045638)), aes(y = assigned_gene_prop, x = prenatal)) +
+  geom_boxplot() +
+  theme_bw(base_size = 20) +
+  ylab("Assigned Gene Prop") +
+  xlab("Age Group")
+
