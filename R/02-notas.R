@@ -65,3 +65,24 @@ rse[1:2, ] # Se imprime el primer y segundo renglón del objeto y todas las colu
 ## Comando 2
 rse[, c("A", "D", "F")] # Se imprimen todos los renglones del objeto y las columnas A,D y F
 
+### iSEE ###
+
+## Explora el objeto rse de forma interactiva
+library("iSEE")
+iSEE::iSEE(rse)
+
+### Ejercicio con spatialLIBD ###
+
+## Descarguemos unos datos de spatialLIBD
+sce_layer <- spatialLIBD::fetch_data("sce_layer")
+
+## Revilsemos el tamaño de este objeto
+obstr::obj_size(sce_layer)
+
+sce_layer
+rowData(sce_layer)
+colData(sce_layer)
+
+# Al igual que nuestro objeto rse podemos usar iSEE::iSEE() para explorar los datos.
+iSEE::iSEE(sce_layer)
+
