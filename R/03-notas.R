@@ -68,3 +68,39 @@ vd <- VisualizeDesign(sampleData = sampleData,
 
 cowplot::plot_grid(plotlist = vd$plotlist, ncol = 1)
 
+
+###  Datos de SRP045638 con recount 3 ###
+
+library("recount3")
+
+options(recount3_url = "https://recount-opendata.s3.amazonaws.com/recount3/release")
+
+human_projects <- available_projects()
+
+rse_gene_SRP045638 <- create_rse(
+  subset(
+    human_projects,
+    project == "SRP045638" & project_type == "data_sources"
+  )
+)
+
+assay(rse_gene_SRP045638, "counts") <- compute_read_counts(rse_gene_SRP045638)
+
+# Una vez descargados y con los números de lecturas podemos usar expand_sra_attributes().
+# Sin embargo, tenemos un problema con estos datos.
+
+rse_gene_SRP045638$sra.sample_attributes[1:3]
+
+# Vamos a intentar resolverlo eliminando información que está presente solo en ciertas muestras.
+
+rse_gene_SRP045638$sra.sample_attributes <- gsub("dev_stage;;Fetal\\|", "", rse_gene_SRP045638$sra.sample_attributes)
+rse_gene_SRP045638$sra.sample_attributes[1:3]
+
+# Repetimos el código de ayer
+rse_gene_SRP045638 <- expand_sra_attributes(rse_gene_SRP045638)
+
+colData(rse_gene_SRP045638)[
+  ,
+  grepl("^sra_attribute", colnames(colData(rse_gene_SRP045638)))
+]
+
