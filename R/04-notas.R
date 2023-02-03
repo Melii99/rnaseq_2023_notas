@@ -31,6 +31,17 @@ with(colData(rse_gene), tapply(totalAssignedGene, PrimaryDx, summary))
 with(colData(rse_gene), tapply(mitoRate, PrimaryDx, summary))
 
 
+# También es posible hacer graficas nosotros mismos. Aquí les muestro una posible respuesta
+# con ggplot2
+library("ggplot2")
+ggplot(
+  as.data.frame(colData(rse_gene)),
+  aes(y = totalAssignedGene, group = PrimaryDx, x = PrimaryDx)
+) +
+  geom_boxplot() +
+  theme_bw(base_size = 20) +
+  xlab("Diagnosis")
+
 ### Grafica la expresión de SNAP25 para cada grupo de diagnosis ###
 
 # Explora el objeto rse de forma interactiva
