@@ -48,5 +48,25 @@ ggplot(
 library("iSEE")
 iSEE::iSEE(rse_gene)
 
+# Respuesta alternativa con ggplot2
+
+## Encontremos el gene SNAP25
+rowRanges(rse_gene)
+## En este objeto los nombres de los genes vienen en la variable "Symbol"
+i <- which(rowRanges(rse_gene)$Symbol == "SNAP25")
+i
+## Para graficar con ggplot2, hagamos un pequeño data.frame
+df <- data.frame(
+  expression = assay(rse_gene)[i, ],
+  Dx = rse_gene$PrimaryDx
+)
+## Ya teniendo el pequeño data.frame, podemos hacer la gráfica
+ggplot(df, aes(y = log2(expression + 0.5), group = Dx, x = Dx)) +
+  geom_boxplot() +
+  theme_bw(base_size = 20) +
+  xlab("Diagnosis") +
+  ylab("SNAP25: log2(x + 0.5)")
+
+
 ### Sugerir un modelo estadístico para usar en un análisis de expresión diferencial ###
 
