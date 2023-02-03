@@ -265,3 +265,23 @@ col.sex <- as.character(col.sex)
 ## MDS por sexo
 plotMDS(vGene$E, labels = df$Sex, col = col.sex)
 
+
+### Ejercicio Heatmap con nombres ###
+
+# Guardamos los IDs de los 50 genes
+ids_genes <- rownames(exprs_heatmap)
+
+# Usando match para unir cada gen
+rownames(exprs_heatmap) <- rowRanges(rse_gene_SRP045638)$gene_name[
+  match(rownames(exprs_heatmap), rowRanges(rse_gene_SRP045638)$gene_id)
+]
+
+# Graficamos
+pheatmap(
+  exprs_heatmap,
+  cluster_rows = TRUE,
+  cluster_cols = TRUE,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  annotation_col = df
+)
