@@ -12,6 +12,10 @@ load(speaqeasy_data, verbose = TRUE)
 ## Exploramos el objeto
 rse_gene
 
+## Eliminemos el diagnosis "Other" porque no tiene información
+rse_gene$PrimaryDx <- droplevels(rse_gene$PrimaryDx)
+table(rse_gene$PrimaryDx)
+
 
 ### ¿Hay diferencias en totalAssignedGene o mitoRate entre los grupos de diagnosis (PrimaryDx)? ###
 
