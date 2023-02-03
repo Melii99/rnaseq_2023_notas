@@ -70,3 +70,41 @@ ggplot(df, aes(y = log2(expression + 0.5), group = Dx, x = Dx)) +
 
 ### Sugerir un modelo estadístico para usar en un análisis de expresión diferencial ###
 
+## Para el model estadístico exploremos la información de las muestras
+colnames(colData(rse_gene))
+## Podemos usar región del cerebro porque tenemos suficientes datos
+table(rse_gene$BrainRegion)
+## Pero no podemos usar "Race" porque son solo de 1 tipo
+table(rse_gene$Race)
+
+
+droplevels(rse_gene$PrimaryDx)
+
+## Ojo! Acá es importante que hayamos usado droplevels(rse_gene$PrimaryDx)
+## si no, vamos a tener un modelo que no sea _full rank_
+mod <- with(
+  colData(rse_gene),
+  model.matrix(~ PrimaryDx + totalAssignedGene + mitoRate + rRNA_rate + BrainRegion + Sex + AgeDeath)
+)
+
+## Exploremos el modelo de forma interactiva
+if (interactive()) {
+  ## Tenemos que eliminar columnas que tienen NAs.
+  info_no_NAs <- colData(rse_gene)[, c(
+    "PrimaryDx", "totalAssignedGene", "rRNA_rate", "BrainRegion", "Sex",
+    "AgeDeath", "mitoRate", "Race"
+  )]
+  ExploreModelMatrix::ExploreModelMatrix(
+    info_no_NAs,
+    ~ PrimaryDx + totalAssignedGene + mitoRate + rRNA_rate + BrainRegion + Sex + AgeDeath
+  )
+
+  ## Veamos un modelo más sencillo sin las variables numéricas (continuas) porque
+  ## ExploreModelMatrix nos las muestra como si fueran factors (categoricas)
+  ## en vez de continuas
+  ExploreModelMatrix::ExploreModelMatrix(
+    info_no_NAs,
+    ~ PrimaryDx + BrainRegion + Sex
+  )
+
+}
